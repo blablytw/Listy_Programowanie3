@@ -1,0 +1,47 @@
+﻿<Window x:Class="Zadanie2Lista2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Kolko i krzyzyk"
+        Height="500" Width="400"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="Status"
+                   Grid.Row="0"
+                   Text="Ruch gracza: X"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="5,10,5,15"/>
+
+        <UniformGrid Grid.Row="1"
+                     Rows="3" Columns="3">
+
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
+
+        </UniformGrid>
+
+        <Button Grid.Row="2"
+                Content="Nowa gra"
+                FontSize="20"
+                Height="45"
+                Margin="3,12,3,3"
+                Click="NowaGra_Click"/>
+    </Grid>
+</Window>
