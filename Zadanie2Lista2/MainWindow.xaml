@@ -12,36 +12,36 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="Status"
-                   Grid.Row="0"
-                   Text="Ruch gracza: X"
+        <TextBlock Grid.Row="0"
+                   Text="{Binding Status}"
                    FontSize="24"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
                    Margin="5,10,5,15"/>
 
-        <UniformGrid Grid.Row="1"
-                     Rows="3" Columns="3">
-
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-            <Button FontSize="40" Click="Pole_Click" Margin="3"/>
-
-        </UniformGrid>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Pola}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="3" Columns="3"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button FontSize="40"
+                            Margin="3"
+                            Content="{Binding Tekst}"
+                            Command="{Binding DataContext.RuchCommand,
+                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <Button Grid.Row="2"
                 Content="Nowa gra"
                 FontSize="20"
                 Height="45"
                 Margin="3,12,3,3"
-                Click="NowaGra_Click"/>
+                Command="{Binding NowaGraCommand}"/>
     </Grid>
 </Window>

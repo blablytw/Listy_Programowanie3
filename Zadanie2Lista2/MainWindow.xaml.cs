@@ -1,139 +1,120 @@
-﻿using System.Net.NetworkInformation;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Zadanie2Lista2
 {
     public partial class MainWindow : Window
     {
-        string gracz = "X";
-        bool koniecGry = false;
-
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new GraViewModel();
+        }
+    }
+
+    public class ZmianaWlasciwosci : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void Powiadom(string nazwa)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nazwa));
+        }
+    }
+
+    public class PoleGry : ZmianaWlasciwosci
+    {
+        private string tekst = "";
+
+        public int Indeks { get; }
+
+        public string Tekst
+        {
+            get => tekst;
+            set
+            {
+                tekst = value;
+                Powiadom(nameof(Tekst));
+            }
         }
 
-        private void Pole_Click(object sender, RoutedEventArgs e)
+        public PoleGry(int indeks)
         {
-            if (koniecGry)
-                return;
+            Indeks = indeks;
+        }
+    }
 
-            Button pole = (Button)sender;
+    public class RelayCommand : ICommand
+    {
+        private readonly Action<object?> akcja;
 
-            if (pole.Content != null &&
-                pole.Content.ToString() != "")
-                return;
-
-            pole.Content = gracz;
-
-            if (CzyWygrana())
-            {
-                Status.Text = "Wygrywa gracz " + gracz + "!";
-                koniecGry = true;
-                return;
-            }
-
-            if (CzyRemis())
-            {
-                Status.Text = "Remis!";
-                koniecGry = true;
-                return;
-            }
-
-            if (gracz == "X")
-                gracz = "O";
-            else
-                gracz = "X";
-
-            Status.Text = "Ruch gracza: " + gracz;
+        public RelayCommand(Action<object?> akcja)
+        {
+            this.akcja = akcja;
         }
 
-        private bool CzyWygrana()
+        public event EventHandler? CanExecuteChanged
         {
-            Button[] pola = new Button[9];
-
-            int i = 0;
-
-            foreach (UIElement element in
-                     ((UniformGrid)((Grid)Content).Children[1]).Children)
-            {
-                pola[i] = (Button)element;
-                i++;
-            }
-
-            int[,] linie =
-            {
-                { 0, 1, 2 },
-                { 3, 4, 5 },
-                { 6, 7, 8 },
-                { 0, 3, 6 },
-                { 1, 4, 7 },
-                { 2, 5, 8 },
-                { 0, 4, 8 },
-                { 2, 4, 6 }
-            };
-
-            for (int j = 0; j < 8; j++)
-            {
-                int a = linie[j, 0];
-                int b = linie[j, 1];
-                int c = linie[j, 2];
-
-                if (pola[a].Content != null &&
-                    pola[a].Content.ToString() == gracz &&
-                    pola[b].Content != null &&
-                    pola[b].Content.ToString() == gracz &&
-                    pola[c].Content != null &&
-                    pola[c].Content.ToString() == gracz)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
-        private bool CzyRemis()
+        public bool CanExecute(object? parameter) => true;
+
+        public void Execute(object? parameter) => akcja(parameter);
+    }
+
+    public class GraViewModel : ZmianaWlasciwosci
+    {
+        private readonly LogikaGry logika = new();
+        private string status;
+
+        public ObservableCollection<PoleGry> Pola { get; } = new();
+
+        public string Status
         {
-            UniformGrid plansza =
-                (UniformGrid)((Grid)Content).Children[1];
-
-            foreach (UIElement element in plansza.Children)
+            get => status;
+            set
             {
-                Button pole = (Button)element;
-
-                if (pole.Content == null ||
-                    pole.Content.ToString() == "")
-                    return false;
+                status = value;
+                Powiadom(nameof(Status));
             }
-
-            return true;
         }
 
-        private void NowaGra_Click(object sender, RoutedEventArgs e)
+        public ICommand RuchCommand { get; }
+        public ICommand NowaGraCommand { get; }
+
+        public GraViewModel()
         {
-            UniformGrid plansza =
-                (UniformGrid)((Grid)Content).Children[1];
+            for (int i = 0; i < 9; i++)
+                Pola.Add(new PoleGry(i));
 
-            foreach (UIElement element in plansza.Children)
-            {
-                Button pole = (Button)element;
-                pole.Content = "";
-            }
+            status = logika.Status;
 
-            gracz = "X";
-            koniecGry = false;
-            Status.Text = "Ruch gracza: X";
+            RuchCommand = new RelayCommand(Ruch);
+            NowaGraCommand = new RelayCommand(_ => NowaGra());
+        }
+
+        private void Ruch(object? parametr)
+        {
+            if (parametr is PoleGry pole && logika.Ruch(pole.Indeks))
+                Odswiez();
+        }
+
+        private void NowaGra()
+        {
+            logika.Reset();
+            Odswiez();
+        }
+
+        private void Odswiez()
+        {
+            foreach (PoleGry pole in Pola)
+                pole.Tekst = logika[pole.Indeks];
+
+            Status = logika.Status;
         }
     }
 }
