@@ -10,7 +10,7 @@ namespace Zadanie2Lista2
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new GraViewModel();
+            DataContext = new ModelWidoku();
         }
     }
 
@@ -46,11 +46,11 @@ namespace Zadanie2Lista2
         }
     }
 
-    public class RelayCommand : ICommand
+    public class PrzekaznikKomendy : ICommand
     {
         private readonly Action<object?> akcja;
 
-        public RelayCommand(Action<object?> akcja)
+        public PrzekaznikKomendy(Action<object?> akcja)
         {
             this.akcja = akcja;
         }
@@ -61,12 +61,12 @@ namespace Zadanie2Lista2
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object? parametr) => true;
 
-        public void Execute(object? parameter) => akcja(parameter);
+        public void Execute(object? parametr) => akcja(parametr);
     }
 
-    public class GraViewModel : ZmianaWlasciwosci
+    public class ModelWidoku : ZmianaWlasciwosci
     {
         private readonly LogikaGry logika = new();
         private string status;
@@ -83,18 +83,18 @@ namespace Zadanie2Lista2
             }
         }
 
-        public ICommand RuchCommand { get; }
-        public ICommand NowaGraCommand { get; }
+        public ICommand RuchKomenda { get; }
+        public ICommand NowaGraKomenda { get; }
 
-        public GraViewModel()
+        public ModelWidoku()
         {
             for (int i = 0; i < 9; i++)
                 Pola.Add(new PoleGry(i));
 
             status = logika.Status;
 
-            RuchCommand = new RelayCommand(Ruch);
-            NowaGraCommand = new RelayCommand(_ => NowaGra());
+            RuchKomenda = new PrzekaznikKomendy(Ruch);
+            NowaGraKomenda = new PrzekaznikKomendy(_ => NowaGra());
         }
 
         private void Ruch(object? parametr)
@@ -105,14 +105,14 @@ namespace Zadanie2Lista2
 
         private void NowaGra()
         {
-            logika.Reset();
+            logika.Resetuj();
             Odswiez();
         }
 
         private void Odswiez()
         {
             foreach (PoleGry pole in Pola)
-                pole.Tekst = logika[pole.Indeks];
+                pole.Tekst = logika.PobierzPole(pole.Indeks);
 
             Status = logika.Status;
         }

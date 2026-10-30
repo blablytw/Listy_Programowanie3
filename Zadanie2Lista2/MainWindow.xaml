@@ -30,7 +30,7 @@
                     <Button FontSize="40"
                             Margin="3"
                             Content="{Binding Tekst}"
-                            Command="{Binding DataContext.RuchCommand,
+                            Command="{Binding DataContext.RuchKomenda,
                                       RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             CommandParameter="{Binding}"/>
                 </DataTemplate>
@@ -42,6 +42,6 @@
                 FontSize="20"
                 Height="45"
                 Margin="3,12,3,3"
-                Command="{Binding NowaGraCommand}"/>
+                Command="{Binding NowaGraKomenda}"/>
     </Grid>
 </Window>

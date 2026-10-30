@@ -21,14 +21,17 @@ namespace Zadanie2Lista2
 
         public LogikaGry()
         {
-            Reset();
+            Resetuj();
         }
 
-        public string this[int indeks] => plansza[indeks];
+        public string PobierzPole(int indeks)
+        {
+            return plansza[indeks];
+        }
 
         public bool Ruch(int indeks)
         {
-            if (KoniecGry || plansza[indeks] != "")
+            if (KoniecGry || indeks < 0 || indeks >= plansza.Length || plansza[indeks] != "")
                 return false;
 
             plansza[indeks] = Gracz;
@@ -52,7 +55,7 @@ namespace Zadanie2Lista2
             return true;
         }
 
-        public void Reset()
+        public void Resetuj()
         {
             for (int i = 0; i < plansza.Length; i++)
                 plansza[i] = "";
@@ -64,11 +67,11 @@ namespace Zadanie2Lista2
 
         private bool CzyWygrana()
         {
-            foreach (int[] l in Linie)
+            foreach (int[] linia in Linie)
             {
-                if (plansza[l[0]] == Gracz &&
-                    plansza[l[1]] == Gracz &&
-                    plansza[l[2]] == Gracz)
+                if (plansza[linia[0]] == Gracz &&
+                    plansza[linia[1]] == Gracz &&
+                    plansza[linia[2]] == Gracz)
                     return true;
             }
 
