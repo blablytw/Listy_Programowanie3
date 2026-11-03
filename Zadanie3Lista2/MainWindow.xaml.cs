@@ -19,7 +19,7 @@ namespace Zadanie3Lista2
             gracz1.Show();
             gracz2.Show();
 
-            this.Hide();
+            this.Close();
         }
     }
 }

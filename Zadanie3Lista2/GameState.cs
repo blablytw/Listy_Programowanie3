@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zadanie3Lista2
+﻿namespace Zadanie3Lista2
 {
     public class GameState
     {

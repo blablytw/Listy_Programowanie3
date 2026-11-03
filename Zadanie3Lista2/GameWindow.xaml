@@ -8,22 +8,38 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="15">
 
-            <TextBlock x:Name="Status"
-                       Text="Ustaw swoje statki"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center"
-                       Margin="5,5,5,15"/>
+            <TextBlock Text="{Binding Status}"
+                FontSize="22"
+                FontWeight="Bold"
+                TextWrapping="Wrap"
+                HorizontalAlignment="Center"
+                Margin="5,5,5,15"/>
 
             <TextBlock Text="Twoja plansza"
                        FontSize="18"
                        FontWeight="Bold"
                        Margin="0,5"/>
 
-            <UniformGrid x:Name="OwnBoard"
-                         Rows="5" Columns="5"
-                         HorizontalAlignment="Center"/>
+            <ItemsControl ItemsSource="{Binding MojePola}"
+              HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="5" Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Tekst}"
+                    IsEnabled="{Binding CzyAktywne}"
+                    FontSize="20"
+                    Margin="2"
+                    Width="55"
+                    Height="50"
+                    Click="MojePole_Click"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
 
             <TextBlock Text="Plansza przeciwnika — strzelaj tutaj"
                        FontSize="18"
@@ -31,9 +47,25 @@
                        TextWrapping="Wrap"
                        Margin="0,20,0,5"/>
 
-            <UniformGrid x:Name="EnemyBoard"
-                         Rows="5" Columns="5"
-                         HorizontalAlignment="Center"/>
+            <ItemsControl ItemsSource="{Binding PolaWroga}"
+              HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="5" Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Tekst}"
+                    IsEnabled="{Binding CzyAktywne}"
+                    FontSize="20"
+                    Margin="2"
+                    Width="55"
+                    Height="50"
+                    Click="WrogPole_Click"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
         </StackPanel>
     </ScrollViewer>

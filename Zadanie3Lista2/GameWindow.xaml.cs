@@ -1,24 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Zadanie3Lista2
 {
-    public partial class GameWindow : Window
+    public partial class GameWindow : Window, INotifyPropertyChanged
     {
         GameState gra;
         int gracz;
 
-        Button[,] mojePola = new Button[5, 5];
-        Button[,] polaWroga = new Button[5, 5];
+        Pole[,] mojePola = new Pole[5, 5];
+        Pole[,] polaWroga = new Pole[5, 5];
+
+        public List<Pole> MojePola { get; } = new List<Pole>();
+        public List<Pole> PolaWroga { get; } = new List<Pole>();
+
+        private string status;
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public GameWindow(GameState stanGry, int numerGracza)
         {
@@ -33,29 +41,17 @@ namespace Zadanie3Lista2
             {
                 for (int c = 0; c < 5; c++)
                 {
-                    Button moje = new Button();
-                    moje.FontSize = 20;
-                    moje.Margin = new Thickness(2);
-                    moje.Width = 55;
-                    moje.Height = 50;
-                    moje.Tag = r + "," + c;
-                    moje.Click += MojePole_Click;
-
+                    Pole moje = new Pole { Wiersz = r, Kolumna = c };
                     mojePola[r, c] = moje;
-                    OwnBoard.Children.Add(moje);
+                    MojePola.Add(moje);
 
-                    Button wrog = new Button();
-                    wrog.FontSize = 20;
-                    wrog.Margin = new Thickness(2);
-                    wrog.Width = 55;
-                    wrog.Height = 50;
-                    wrog.Tag = r + "," + c;
-                    wrog.Click += WrogPole_Click;
-
+                    Pole wrog = new Pole { Wiersz = r, Kolumna = c };
                     polaWroga[r, c] = wrog;
-                    EnemyBoard.Children.Add(wrog);
+                    PolaWroga.Add(wrog);
                 }
             }
+
+            DataContext = this;
 
             gra.Updated += OdrysujPlansze;
 
@@ -67,24 +63,16 @@ namespace Zadanie3Lista2
             if (gra.Turn != 0)
                 return;
 
-            Button pole = (Button)sender;
-            string[] pozycja = pole.Tag.ToString().Split(',');
+            Pole pole = (Pole)((Button)sender).DataContext;
 
-            int r = int.Parse(pozycja[0]);
-            int c = int.Parse(pozycja[1]);
-
-            gra.PlaceShip(gracz, r, c);
+            gra.PlaceShip(gracz, pole.Wiersz, pole.Kolumna);
         }
 
         private void WrogPole_Click(object sender, RoutedEventArgs e)
         {
-            Button pole = (Button)sender;
-            string[] pozycja = pole.Tag.ToString().Split(',');
+            Pole pole = (Pole)((Button)sender).DataContext;
 
-            int r = int.Parse(pozycja[0]);
-            int c = int.Parse(pozycja[1]);
-
-            gra.Shoot(gracz, r, c);
+            gra.Shoot(gracz, pole.Wiersz, pole.Kolumna);
         }
 
         private void OdrysujPlansze()
@@ -108,19 +96,19 @@ namespace Zadanie3Lista2
                     // Wlasna plansza
                     if (mojeStrzaly[r, c])
                     {
-                        mojePola[r, c].Content =
+                        mojePola[r, c].Tekst =
                             mojeStatki[r, c] == 1 ? "X" : "-";
                     }
                     else if (mojeStatki[r, c] == 1)
                     {
-                        mojePola[r, c].Content = "S";
+                        mojePola[r, c].Tekst = "S";
                     }
                     else
                     {
-                        mojePola[r, c].Content = "";
+                        mojePola[r, c].Tekst = "";
                     }
 
-                    mojePola[r, c].IsEnabled =
+                    mojePola[r, c].CzyAktywne =
                         gra.Turn == 0 &&
                         gra.CountShips(gracz) < 3 &&
                         mojeStatki[r, c] == 0;
@@ -128,15 +116,15 @@ namespace Zadanie3Lista2
                     // Plansza przeciwnika
                     if (mojeAtaki[r, c])
                     {
-                        polaWroga[r, c].Content =
+                        polaWroga[r, c].Tekst =
                             statkiWroga[r, c] == 1 ? "X" : "-";
                     }
                     else
                     {
-                        polaWroga[r, c].Content = "";
+                        polaWroga[r, c].Tekst = "";
                     }
 
-                    polaWroga[r, c].IsEnabled =
+                    polaWroga[r, c].CzyAktywne =
                         gra.Turn == gracz &&
                         gra.Winner == 0 &&
                         !mojeAtaki[r, c];
@@ -145,23 +133,23 @@ namespace Zadanie3Lista2
 
             if (gra.Winner != 0)
             {
-                Status.Text = gra.Winner == gracz
+                Status = gra.Winner == gracz
                     ? "Wygrales!"
                     : "Przegrales!";
             }
             else if (gra.Turn == 0)
             {
-                Status.Text = "Gracz " + gracz +
+                Status = "Gracz " + gracz +
                     ": ustaw statki (" +
                     gra.CountShips(gracz) + "/3)";
             }
             else if (gra.Turn == gracz)
             {
-                Status.Text = "Twoja kolej — oddaj strzal!";
+                Status = "Twoja kolej — oddaj strzal!";
             }
             else
             {
-                Status.Text = "Czekaj na ruch przeciwnika.";
+                Status = "Czekaj na ruch przeciwnika.";
             }
         }
     }
