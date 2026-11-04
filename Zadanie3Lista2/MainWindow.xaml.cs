@@ -11,13 +11,14 @@ namespace Zadanie3Lista2
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            GameState gra = new GameState();
+            StanGry gra = new StanGry();
 
-            GameWindow gracz1 = new GameWindow(gra, 1);
-            GameWindow gracz2 = new GameWindow(gra, 2);
+            gra.Okna[1] = new OknoGry(gra, 1);
+            gra.Okna[2] = new OknoGry(gra, 2);
 
-            gracz1.Show();
-            gracz2.Show();
+            gra.Okna[1]!.Show();
+            gra.Okna[2]!.Show();
+            gra.Odswiez();
 
             this.Close();
         }
