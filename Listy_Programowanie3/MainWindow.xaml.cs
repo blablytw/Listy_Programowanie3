@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Listy_Programowanie3
+namespace lista1
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
