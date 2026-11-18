@@ -8,6 +8,8 @@ namespace Zadanie3Lista2
         public Gracz2()
         {
             InitializeComponent();
+            GeneratorPrzyciskow.Dodaj(plnPersonForm, "PersonIdTwo", "YesNoToBooleanConverter", 0, Button_Click);
+            GeneratorPrzyciskow.Dodaj(plnPersonForm, "PersonIdOne", "YesNoToBooleanConverter2", 11, Button_Click_shot);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace Zadanie3Lista2
 {
@@ -8,10 +9,12 @@ namespace Zadanie3Lista2
         public MainWindow()
         {
             InitializeComponent();
-            int[] tab = new int[100];
-            int[] tab2 = new int[100];
-            Game gra = new Game(tab, tab2);
+            Game gra = new Game();
+            gra.PersonIdOne = new ObservableCollection<int>(new int[100]);
+            gra.PersonIdTwo = new ObservableCollection<int>(new int[100]);
             plnPersonForm.DataContext = gra;
+            GeneratorPrzyciskow.Dodaj(plnPersonForm, "PersonIdOne", "YesNoToBooleanConverter", 0, Button_Click);
+            GeneratorPrzyciskow.Dodaj(plnPersonForm, "PersonIdTwo", "YesNoToBooleanConverter2", 11, Button_Click_shot);
             Gracz2 okno = new Gracz2();
             okno.DataContext = gra;
             okno.Show();

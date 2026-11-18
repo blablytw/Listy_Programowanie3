@@ -30,18 +30,7 @@ namespace Zadanie3Lista2
             }
         }
 
-        public Game(int[] nPersonIdOne, int[] nPersonIdTwo)
-        {
-            foreach (int _person in nPersonIdOne)
-            {
-                _PersonIdOne.Add(_person);
-            }
-
-            foreach (int _person in nPersonIdTwo)
-            {
-                _PersonIdTwo.Add(_person);
-            }
-        }
+           
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
