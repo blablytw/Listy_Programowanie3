@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Zadanie3Lista2
 {
@@ -7,20 +8,33 @@ namespace Zadanie3Lista2
         public MainWindow()
         {
             InitializeComponent();
+            int[] tab = new int[100];
+            int[] tab2 = new int[100];
+            Game gra = new Game(tab, tab2);
+            plnPersonForm.DataContext = gra;
+            Gracz2 okno = new Gracz2();
+            okno.DataContext = gra;
+            okno.Show();
         }
 
-        private void Start_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            StanGry gra = new StanGry();
+            Button btn = (Button)sender;
+            Game gra = (Game)plnPersonForm.DataContext;
+            int nr = Convert.ToInt32(btn.Tag.ToString());
+            if (gra.PersonIdOne[nr] == 0)
+                gra.PersonIdOne[nr]++;
+            else if (gra.PersonIdOne[nr] == 1)
+                gra.PersonIdOne[nr]--;
+        }
 
-            gra.Okna[1] = new OknoGry(gra, 1);
-            gra.Okna[2] = new OknoGry(gra, 2);
-
-            gra.Okna[1]!.Show();
-            gra.Okna[2]!.Show();
-            gra.Odswiez();
-
-            this.Close();
+        private void Button_Click_shot(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Game gra = (Game)plnPersonForm.DataContext;
+            int nr = Convert.ToInt32(btn.Tag.ToString());
+            if (gra.PersonIdTwo[nr] == 0 || gra.PersonIdTwo[nr] == 1)
+                gra.PersonIdTwo[nr] += 2;
         }
     }
 }
