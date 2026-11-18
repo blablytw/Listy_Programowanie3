@@ -20,8 +20,7 @@ namespace Zadanie2Lista2
             }
         }
 
-        // Event handler for INotifyPropertyChanged
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;  
         void OnPropertyChanged(string propName)
         {
             if (PropertyChanged != null)
@@ -36,8 +35,8 @@ namespace Zadanie2Lista2
             for (int i = 0; i < 9; i++)
                 tab.Add("");
         }
-
-        public void ValuateWinCndition()
+          
+        public void ValuateWinCndition()   
         {
             if (tab.Count == 9)
             {
