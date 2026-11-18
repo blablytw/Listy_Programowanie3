@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="Listy_Programowanie3/Listy_Programowanie3.csproj" />
   <Project Path="Zadanie2Lista2/Zadanie2Lista2.csproj" Id="8c5fbb97-5950-4e4c-8d0f-63f94666f948" />
+  <Project Path="lista2/Lista 2 Zadanie 1.csproj" />
+  <Project Path="Listy_Programowanie3/lista1.csproj" />
 </Solution>
