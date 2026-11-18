@@ -1,47 +1,33 @@
 ﻿<Window x:Class="Zadanie2Lista2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Kolko i krzyzyk"
-        Height="500" Width="400"
-        WindowStartupLocation="CenterScreen">
-
-    <Grid Margin="15">
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Zadanie2Lista2"
+        mc:Ignorable="d"
+        Title="Kolko i krzyzyk" Height="450" Width="800">
+    <Window.Resources>
+        <local:StringToBoolConverter x:Key="StrToBool" />
+    </Window.Resources>
+    <Grid x:Name="ctlGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0"
-                   Text="{Binding Status}"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   Margin="5,10,5,15"/>
-
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Pola}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="3" Columns="3"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button FontSize="40"
-                            Margin="3"
-                            Content="{Binding Tekst}"
-                            Command="{Binding DataContext.RuchKomenda,
-                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                            CommandParameter="{Binding}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <Button Grid.Row="2"
-                Content="Nowa gra"
-                FontSize="20"
-                Height="45"
-                Margin="3,12,3,3"
-                Command="{Binding NowaGraKomenda}"/>
+        <Button Content="{Binding tab[0]}" Click="Button_Click" Tag="0" IsEnabled="{Binding tab[0], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Column="1" Content="{Binding tab[1]}" Click="Button_Click" Tag="1" IsEnabled="{Binding tab[1], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Column="2" Content="{Binding tab[2]}" Click="Button_Click" Tag="2" IsEnabled="{Binding tab[2], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="1" Content="{Binding tab[3]}" Click="Button_Click" Tag="3" IsEnabled="{Binding tab[3], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="{Binding tab[4]}" Click="Button_Click" Tag="4" IsEnabled="{Binding tab[4], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="{Binding tab[5]}" Click="Button_Click" Tag="5" IsEnabled="{Binding tab[5], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="2" Content="{Binding tab[6]}" Click="Button_Click" Tag="6" IsEnabled="{Binding tab[6], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="{Binding tab[7]}" Click="Button_Click" Tag="7" IsEnabled="{Binding tab[7], Converter={StaticResource StrToBool}}" FontSize="30"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="{Binding tab[8]}" Click="Button_Click" Tag="8" IsEnabled="{Binding tab[8], Converter={StaticResource StrToBool}}" FontSize="30"/>
     </Grid>
 </Window>
